@@ -9,6 +9,7 @@ function TodoList() {
 
 
     let addNewTask = () => {
+        if (!newTodo.trim()) return;
 
         // console.log("We need to add a new todo in the tasks.");
 
@@ -16,6 +17,15 @@ function TodoList() {
             return [...previousTodos, { task: newTodo, id: uuidv4(), isDone: false }]
         });
         setNewTodo("")
+
+    }
+
+
+    let handleKeyDown = (event) => {
+
+        if (event.key === "Enter") {
+            addNewTask();
+        }
 
     }
 
@@ -82,7 +92,7 @@ function TodoList() {
 
         settodos((prevTodos) => {
 
-            return prevTodos.map((todo) => { return { ...todo, isDone: true } })
+            return prevTodos.map((todo) => { return { ...todo, isDone: !todo.isDone } })
 
         })
     }
@@ -94,7 +104,7 @@ function TodoList() {
         settodos((prevTodos) => {
             return prevTodos.map((todo) => {
                 if (todo.id == id) {
-                    return { ...todo, isDone: true }
+                    return { ...todo, isDone: !todo.isDone }
                 } else {
                     return todo;
                 }
@@ -110,7 +120,7 @@ function TodoList() {
 
     return (
         <div>
-            <input type="text" placeholder="Enter Tasks here" value={newTodo} onChange={updateTodoValue} />
+            <input type="text" placeholder="Enter Tasks here" value={newTodo} onChange={updateTodoValue} onKeyDown={handleKeyDown} />
             <br />
             <button onClick={addNewTask} disabled={!newTodo.trim()}>Add Task</button>
 
